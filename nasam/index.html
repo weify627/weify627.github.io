@@ -1,5 +1,421 @@
- 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Self-supervised Neural Articulated Shape and Appearance
+					Models">
+    <meta name="author" content="Fangyin Wei, Rohan Chabra, Lingni Ma,
+								Christoph Lassner, Michael Zollhoefer, Szymon
+								Rusinkiewicz, Chris Sweeney, Richard Newcombe, and Mira
+								Slavcheva">
 
+    <title>Self-supervised Neural Articulated Shape and Appearance Models</title>
+    <!-- Bootstrap core CSS -->
+    <!--link href="bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <!-- <link href="offcanvas.css" rel="stylesheet"> -->
+    <!--    <link rel="icon" href="img/favicon.gif" type="image/gif">-->
+
+    <link rel="stylesheet" href="./css/bulma.min.css">
+    <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./css/bulma-slider.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./css/offcanvas.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./js/fontawesome.all.min.js"></script>
+    <script src="./js/bulma-carousel.min.js"></script>
+    <script src="./js/bulma-slider.min.js"></script>
+    <script src="./js/index.js"></script>
+<style>
+
+/* Style the navbar */
+#navbar {
+  overflow: hidden;
+  background-color: #333;
+  z-index:1000;
+  display: flex;
+}
+
+/* Navbar links */
+#navbar a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+  flex-grow: 1;
+  border-right: 1px solid #3479f6;
+  border-left: 1px solid #3479f6 ;
+}
+
+#navbar a:hover {
+  background-color: #fff;
+  color: black;
+}
+
+/* Page content */
+.content {
+  padding: 16px;
+}
+
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .content {
+  padding-top: 60px;
+}
+
+lrsolid {
+  flex-grow: 1;
+  text-align: center;
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+<div id="navbar">
+  <a  href="#real"><lrsolid>Teaser</lrsolid></a>
+  <a href="#abstract"><lrsolid>Abstract</lrsolid></a>
+  <a href="#realinter"><lrsolid>Interactive (Real-world)</lrsolid></a>
+  <a href="#synthetic"><lrsolid>Interactive (Synthetic)</lrsolid></a>
+  <a href="#interp"><lrsolid>Interpolation & Extrapolation</lrsolid></a>
+  <a href="#paper"><lrsolid>Paper</lrsolid></a>
+  <a href="#video"><lrsolid>5-min Video (coming out soon)</lrsolid></a>
+</div>
+<div class="jumbotron jumbotron-fluid">
+		<h2>Self-supervised Neural Articulated Shape and Appearance Models</br> (CVPR 2022)</h2>
+<!--            <p class="abstract">An interpretable, data-efficient, and scalable neural scene representation.</p>-->
+    <p class="authors">
+				<a href="https://weify627.github.io"> Fangyin Wei</a>,
+				<a href="https://scholar.google.com/citations?user=A3x7UAYAAAAJ&hl=en"> Rohan Chabra</a>,
+				<a href="https://scholar.google.nl/citations?user=eUAgpwkAAAAJ&hl=en"> Lingni Ma</a>,
+				<a href="https://christophlassner.de"> Christoph Lassner</a>,
+				<a href="https://zollhoefer.com"> Michael Zollhöfer</a>,</br>
+				<a href="https://www.cs.princeton.edu/~smr/"> Szymon Rusinkiewicz</a>,
+				<a href="https://scholar.google.com/citations?user=h-CpQGgAAAAJ&hl=en"> Chris Sweeney</a>,
+				<a href="https://scholar.google.com/citations?user=MhowvPkAAAAJ"> Richard Newcombe</a>,
+				<a href="https://scholar.google.de/citations?user=cJKcPcIAAAAJ&hl=en"> Mira Slavcheva</a>
+    </p>
+   <!-- <div class="btn-group" role="group" aria-label="Top menu">
+        <a class="btn btn-primary" href="https://arxiv.org/abs/">Paper</a>
+        <a class="btn btn-primary" href="https://weify627.github.io/nasam">Code</a>
+        <a class="btn btn-primary" href="">Talk(Long)</a>
+        <a class="btn btn-primary" href="">Slides</a>
+				</div>
+				-->
+</div>
+
+    <div class="section" id="real">
+			<h2> Animating Shapes from Real-world Static Images</h2>
+        <hr>
+        <div class="row align-items-center">
+            <div class="col justify-content-center text-center">
+                    <img src="img/real.gif">
+               <!-- <video width="90%" playsinline="" autoplay="true" loop="true" preload="true" muted="">
+                    <source src="img/real.mp4" type="video/mp4">
+                </video>-->
+            </div>
+				<center><p>
+Our self-supervised method learns the shape and appearance of articulated object classes. After training from multi-view synthetic
+images of different states of object instances, our model can reconstruct and animate objects from static real-world images
+						</p></center>
+        </div>
+    </div>
+
+    <div class="section" id="abstract">
+			<h2> Abstract</h2>
+        <hr>
+        <p>
+Learning geometry, motion, and appearance priors of
+object classes is important for the solution of a large variety
+of computer vision problems. While the majority of
+approaches has focused on static objects, dynamic objects,
+especially with controllable articulation, are less explored.
+We propose a novel approach for learning a representation
+of the geometry, appearance, and motion of a class of
+articulated objects given only a set of color images as input.
+In a self-supervised manner, our novel representation
+learns shape, appearance, and articulation codes that enable
+independent control of these semantic dimensions. Our
+model is trained end-to-end without requiring any articulation
+annotations. Experiments show that our approach
+performs well for different joint types, such as revolute and
+prismatic joints, as well as different combinations of these
+joints. Compared to state of the art that uses direct 3D
+supervision and does not output appearance, we recover
+more faithful geometry and appearance from 2D observations
+only. In addition, our representation enables a large
+variety of applications, such as few-shot reconstruction, the
+generation of novel articulations, and novel view-synthesis.
+        </p>
+    </div>
+    <div class="section" id="realinter">
+        <h2>Interactively Animating Shapes from Real-world RGB Images</h2>
+				<hr>
+        <p>
+				<center> Use the slider on the right to interactly animate the shapes.</center>
+        </p>
+
+            <div class="columns is-vcenterd align-items-center interpolation-panel">
+                <div width="45%" class="column has-text-centered">
+                    <img src="img/real_laptop.png" class="interpolation-image" alt="Interpolate start reference image." />
+                    <p>Input Static RGB Images</p>
+                </div>
+                <div class="column  interpolation-video-column" >
+                    <div id="wrapper_reallaptop" >
+                        Loading...
+                    </div>
+												<center><p>Output Animation</p></center>
+                </div>
+										<div ><input class="slider is-fullwidth is-large is-info" id="reallaptop" step="1" min="0" max="7" value="0" type="range" orient="vertical">
+												<!--<center><p>Controler</p></center>-->
+										</div>
+            </div>
+            <div class="columns is-vcentered align-items-center interpolation-panel">
+                <div class="column  has-text-centered">
+                    <img src="img/real_laptop2.png" class="interpolation-image" alt="Interpolate start reference image." />
+                    <p>Input Static RGB Images</p>
+                </div>
+                <div class="column interpolation-video-column">
+                    <div id="wrapper_reallaptop2">
+                        Loading...
+                    </div>
+												<center><p>Output Animation</p></center>
+                </div>
+										<div><input class="slider is-fullwidth is-large is-info" id="reallaptop2" step="1" min="0" max="7" value="0" type="range" orient="vertical">
+										</div>
+            </div>
+    </div>
+
+    <div class="section" id="synthetic">
+        <h2>Interactively Animating Shapes from SAPIEN Dataset Images</h2>
+    		<hr>
+        <p>
+				<center> Use the slider on the right to interactly animate the shapes. All testing examples below are unseen during training.</center>
+        </p>
+
+            <div class="columns is-vcentered align-items-center interpolation-panel">
+                <div class="column">
+								<h4>
+								<center> Single Joint</center>
+								</h4>
+										</div>
+						</div>
+            <div class="columns is-vcentered align-items-center interpolation-panel">
+<!--
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_stapler103792_rot">
+                        Loading...
+                    </div>
+                </div>
+								<div><input class="slider is-fullwidth is-large is-info" id="stapler103792_rot" step="1" min="0" max="24" value="0" type="range" orient="vertical"></div>
+-->
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_stapler103792">
+                        Loading...
+                    </div>
+                </div>
+								<div><input class="slider is-fullwidth is-large is-info" id="stapler103792" step="1" min="0" max="9" value="0" type="range" orient="vertical"></div>
+
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_dishwasher12540">
+                        Loading...
+                    </div>
+                </div>
+								<div><input class="slider is-fullwidth is-large is-info" id="dishwasher12540" step="1" min="0" max="9" value="0" type="range" orient="vertical"></div>
+            </div>
+
+            <div class="columns is-vcentered align-items-center interpolation-panel">
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_laptop11477">
+                        Loading...
+                    </div>
+                </div>
+								<div><input class="slider is-fullwidth is-large is-info" id="laptop11477" step="1" min="0" max="90" value="0" type="range" orient="vertical"></div>
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_drawer41510">
+                        Loading...
+                    </div>
+                </div>
+								<div><input class="slider is-fullwidth is-large is-info" id="drawer41510" step="1" min="0" max="9" value="0" type="range" orient="vertical"></div>
+            </div>
+
+            <div class="columns is-vcentered align-items-center interpolation-panel">
+                <div class="column">
+								<h4>
+								<center> Double Joints</center>
+								</h4>
+										</div>
+						</div>
+            <div class="columns is-vcentered align-items-center interpolation-panel">
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_eyeglasses101293">
+                        Loading...
+                    </div>
+                </div>
+                    <div><input class="slider is-1width is-large is-info" id="eyeglasses101293-1" step="1" min="0" max="5" value="0" type="range" orient="vertical"></div>
+                    <div><input class="slider is-1width is-large is-info" id="eyeglasses101293-2" step="1" min="0" max="5" value="0" type="range" orient="vertical"></div>
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_eyeglasses101326">
+                        Loading...
+                    </div>
+                </div>
+                    <div><input class="slider is-1width is-large is-info" id="eyeglasses101326-1" step="1" min="0" max="5" value="0" type="range" orient="vertical"></div>
+                    <div><input class="slider is-1width is-large is-info" id="eyeglasses101326-2" step="1" min="0" max="5" value="0" type="range" orient="vertical"></div>
+            </div>
+
+            <div class="columns is-vcentered align-items-center interpolation-panel">
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_twodrawers46466">
+                        Loading...
+                    </div>
+                </div>
+                    <div><input class="slider is-1width is-large is-info" id="twodrawers46466-1" step="1" min="0" max="5" value="0" type="range" orient="vertical"></div>
+                    <div><input class="slider is-1width is-large is-info" id="twodrawers46466-2" step="1" min="0" max="5" value="0" type="range" orient="vertical"></div>
+                <div class="column is-5 interpolation-video-column">
+                    <div id="wrapper_drawerdoor47570">
+                        Loading...
+                    </div>
+                </div>
+                    <div><input class="slider is-1width is-large is-info" id="drawerdoor47570-1" step="1" min="0" max="4" value="0" type="range" orient="vertical"></div>
+                    <div><input class="slider is-1width is-large is-info" id="drawerdoor47570-2" step="1" min="0" max="4" value="0" type="range" orient="vertical"></div>
+            </div>
+
+<!--
+        <div class="row align-items-center">
+            <div class="col justify-content-center text-center">
+                <video width="75%" playsinline="" autoplay="" loop="" preload="" muted="">
+                    <source src="img/syn_gen.mp4" type="video/mp4">
+                </video>
+            </div> 
+				</div>-->
+    </div>
+
+    <div class="section" id="interp">
+        <h2>Articulation Interpolation and Extrapolation</h2>
+        <hr>
+        <p>
+				While A-SDF loses more details and the shape of non-motion parts may also change in A-SDF, 
+				our method predicts static non-motion parts and more accurate geometry during interpolation and extrapolation.
+
+        </p>
+         <div class="row align-items-center">
+            <div width="50%" class="col justify-content-center text-center">
+								<h3> Interpolation </h3>
+										<img src="img/interpolation.gif">
+             <!--   <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
+                    <source src="img/interpolation.mp4" type="video/mp4">
+                </video>-->
+            </div> 
+            <div width="50%" class="col justify-content-center text-center">
+								<h3> Extrapolation </h3>
+										<img src="img/extrapolation.gif">
+             <!--   <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
+                    <source src="img/extrapolation.mp4" type="video/mp4">
+                </video>-->
+            </div> 
+        </div>
+    </div>
+   <!-- <div class="btn-group" role="group" aria-label="Top menu">
+        <a class="btn btn-primary" href="https://arxiv.org/abs/">Paper</a>
+        <a class="btn btn-primary" href="https://weify627.github.io/nasam">Code</a>
+        <a class="btn btn-primary" href="">Talk(Long)</a>
+        <a class="btn btn-primary" href="">Slides</a>
+				-->
+
+    <div class="section" id="paper">
+			<h2> Paper</h2>
+        <hr>
+        <div>
+            <div class="list-group">
+                <a href="https://arxiv.org/abs/"
+                   class="list-group-item">
+                    <img src="img/paper_thumbnail.jpg" style="width:100%; margin-right:-20px; margin-top:-10px;">
+                </a>
+            </div>
+        </div>
+		</div>
+
+    <div class="section" id="video">
+			<h2> Video</h2>
+        <hr>
+        <div class="vcontainer">
+            <iframe class='video' src="" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </div>
+       </div>
+
+    <div class="section">
+        <h2>Bibtex</h2>
+        <hr>
+        <hr>
+        <div class="bibtexsection">
+            @inproceedings{wei2022nasam,
+                title = {Self-supervised Neural Articulated Shape and Appearance Models},
+                author = {Fangyin Wei and Rohan Chabra and Lingni Ma and Christoph
+                          Lassner and Michael Zollhoefer and Szymon Rusinkiewicz and Chris
+                          Sweeney and Richard Newcombe and Mira Slavcheva},
+                booktitle = {Proceedings IEEE/CVF Conference on Computer Vision
+								and Pattern Recognition (CVPR)},
+                year={2022}
+            }
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        <p>Send feedback and questions to <a href="http://weify627.github.io/">Fangyin Wei</a></p>
+				<p>Acknowledgement: website template from <a href="https://vsitzmann.github.io/siren/">SIREN</a>, <a href="https://nerfies.github.io/">Nerfies</a>, and <a href="https://jitengmu.github.io/A-SDF/">A-SDF</a></p>
+    </footer>
+</div>
+
+<!--
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+-->
+<script>
+// When the user scrolls the page, execute myFunction 
+window.onscroll = function() {myFunction()};
+
+// Get the navbar
+var navbar = document.getElementById("navbar");
+
+// Get the offset position of the navbar
+var sticky = navbar.offsetTop;
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+</script>
+</body>
 </html>
