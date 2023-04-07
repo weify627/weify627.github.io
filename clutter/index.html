@@ -1,315 +1,453 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description"
-          content="Clutter Detection and Removal in 3D Scenes with
-									 View-Consistent Inpainting
-					">
-    <meta name="author" content="Fangyin Wei,
-								Thomas Funkhouser, Szymon Rusinkiewicz
-								">
+  <meta charset="utf-8">
+  <meta name="keywords" content="Clutter Removal">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+        content="Clutter Detection and Removal in 3D Scenes with
+								 View-Consistent Inpainting
+				">
 
-    <title>Clutter Detection and Removal in 3D Scenes with View-Consistent
-				Inpainting</title>
-    <!-- Bootstrap core CSS -->
-    <!--link href="bootstrap.min.css" rel="stylesheet"-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Clutter Detection and Removal in 3D Scenes with View-Consistent
+			Inpainting</title>
 
-    <!-- Custom styles for this template -->
-    <!-- <link href="offcanvas.css" rel="stylesheet"> -->
-    <!--    <link rel="icon" href="img/favicon.gif" type="image/gif">-->
+  <!-- Global site tag (gtag.js) - Google Analytics 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>-->
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-    <link rel="stylesheet" href="./css/bulma.min.css">
-    <link rel="stylesheet" href="./css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="./css/bulma-slider.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-    <link rel="stylesheet" href="./css/offcanvas.css">
+    function gtag() {
+      dataLayer.push(arguments);
+    }
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="./js/fontawesome.all.min.js"></script>
-    <script src="./js/bulma-carousel.min.js"></script>
-    <script src="./js/bulma-slider.min.js"></script>
-    <script src="./js/index.js"></script>
+    gtag('js', new Date());
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FRCBLBJR7Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
 
-  gtag('config', 'G-FRCBLBJR7Y');
-</script>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
 
-<style>
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
 
-/* Style the navbar */
-#navbar {
-  overflow: hidden;
-  background-color: #333;
-  z-index:1000;
-  display: flex;
-}
-
-/* Navbar links */
-#navbar a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px;
-  text-decoration: none;
-  flex-grow: 1;
-  border-right: 1px solid #3479f6;
-  border-left: 1px solid #3479f6 ;
-}
-
-#navbar a:hover {
-  background-color: #fff;
-  color: black;
-}
-
-/* Page content */
-.content {
-  padding: 16px;
-}
-
-/* The sticky class is added to the navbar with JS when it reaches its scroll position */
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%;
-}
-
-/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-  padding-top: 60px;
-}
-
-lrsolid {
-  flex-grow: 1;
-  text-align: center;
-}
-
-
-</style>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
 </head>
-
-
 <body>
-<div id="navbar">
-  <a href="#paper"><lrsolid>Paper</lrsolid></a>
-  <a href="#video"><lrsolid>5-min Video</lrsolid></a>
-  <a  href="#real"><lrsolid>Method Overview</lrsolid></a>
-  <a href="#abstract"><lrsolid>Abstract</lrsolid></a>
-  <a href="#synthetic"><lrsolid>Result (Full Pipeline)</lrsolid></a>
-  <a href="#interp"><lrsolid>Result (3D Inpainting)</lrsolid></a>
-</div>
-<div class="jumbotron jumbotron-fluid">
-		<h2>Clutter Detection and Removal in 3D Scenes with View-Consistent
-				Inpainting</br> </br>
-<!--   (CVPR 2022)</h2>         <p class="abstract">An interpretable, data-efficient, and scalable neural scene representation.</p>-->
-    <p class="authors">
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item"
+							href="https://weify627.github.io/nasam/">
+            NASAM
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Clutter Detection and Removal in 3D Scenes with View-Consistent Inpainting</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
 				<a href="https://weify627.github.io"> Fangyin
-						Wei</a>,&nbsp;&nbsp;&nbsp;&nbsp;
+						Wei</a>,</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block">
 				<a href="https://www.cs.princeton.edu/~funk/"> Thomas
-						Funkhouser</a>,&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="https://www.cs.princeton.edu/~smr/"> Szymon Rusinkiewicz</a>
-				</br>
-				</br>
-				Princeton University
-    </p>
-    <!-- <p class="authors">
-            <sup>1</sup>Princeton University  &nbsp  &nbsp &nbsp
-            <sup>2</sup>Reality Labs Research
-    </p>
-   <div class="btn-group" role="group" aria-label="Top menu">
-        <a class="btn btn-primary" href="https://arxiv.org/abs/">Paper</a>
-        <a class="btn btn-primary" href="https://weify627.github.io/nasam">Code</a>
-        <a class="btn btn-primary" href="">Talk(Long)</a>
-        <a class="btn btn-primary" href="">Slides</a>
-				</div>
-				-->
-</div>
+						Funkhouser</a>,</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block">
+				<a href="https://www.cs.princeton.edu/~smr/"> Szymon Rusinkiewicz</a></span>
+          </div>
 
-    <div class="section" id="paper">
-			<h2> Paper</h2>
-        <hr>
-        <div>
-            <div class="list-group">
-								<a href="https://arxiv.org/abs/" 
-                   class="list-group-item"><!--todo-->
-                    <img src="img/paper_thumbnail.jpg" style="width:100%; margin-right:-20px; margin-top:-10px;">
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Princeton University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
                 </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=w8QZ4Kv-cJg"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link.
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              -->
             </div>
+
+          </div>
         </div>
-		</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="section" id="video">
-			<h2> Video</h2>
-        <hr>
-        <div class="vcontainer">
-						<iframe class="video"
-								src="https://www.youtube.com/embed/w8QZ4Kv-cJg" title="YouTube
-								video player" frameborder="0" allow="accelerometer; autoplay;
-								clipboard-write; encrypted-media; gyroscope;
-								picture-in-picture" allowfullscreen></iframe>
-</div>
-       </div>
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./img/teaser.mp4"
+                type="video/mp4">
+      </video>
+			<h2 class="subtitle ">
+			Removing clutter (frequently-moving objects) from 3D scenes is essential in many applications, including AR/VR,
+			privacy-concerned content filtering, and data augmentation.
+			</h2>
+      <h2 class="subtitle ">
+        Given an input mesh with clutter (left), our method can remove identified clutter objects (middle) and inpaint with
+				coherent geometry and texture (right). 
+      </h2>
+    </div>
+  </div>
+</section>
 
-    <div class="section" id="method">
-			<h2> Method Overview</h2>
-        <hr>
-        <div class="row align-items-center">
-            <div class="col justify-content-center text-center">
-                    <img src="img/overview.png">
-               <!-- <video width="90%" playsinline="" autoplay="true" loop="true" preload="true" muted="">
-                    <source src="img/real.mp4" type="video/mp4">
-                </video>-->
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+						Removing clutter from scenes is essential in many applications,
+						ranging from privacy-concerned content filtering to data augmentation.
+						In this work, we present an automatic system that removes clutter from
+						3D scenes and inpaints with coherent geometry and texture. 
+          </p>
+          <p>
+						We propose
+						techniques for its two key components: 3D segmentation from shared
+						properties and 3D inpainting, both of which are important porblems. The
+						definition of 3D scene clutter (frequently-moving objects) is not well
+						captured by commonly-studied object categories in computer vision. To
+						tackle the lack of well-defined clutter annotations, we group noisy
+						fine-grained labels, leverage virtual rendering, and impose an
+						instance-level area-sensitive loss. Once clutter is removed, we inpaint
+						geometry and texture in the resulting holes by merging inpainted RGB-D
+						images. This requires novel voting and pruning strategies that
+						guarantee multi-view consistency across individually inpainted images
+						for mesh reconstruction. 
+          </p>
+          <p>
+						Experiments on ScanNet and Matterport3D dataset
+						show that our method outperforms baselines for clutter segmentation and
+						3D inpainting, both visually and quantitatively.
+					</p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <!-- Method Overview. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method Overview</h2>
+          <img src="./img/overview.png" height="100%">
+      </div>
+    </div>
+    <!--/ Method Overview. -->
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Full Pipeline Results on ScanNet Dataset</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+          <img src="./img/result1.pdf" height="100%">
+          <img src="./img/result2.pdf" height="100%">
+          <img src="./img/result3.pdf" height="100%">
+          <img src="./img/result4.pdf" height="100%">
+          <img src="./img/result5.pdf" height="100%">
+      </div>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Inpainting Comparison on Matterport3D Dataset</h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-inp1">
+          <video poster="" id="inp1" autoplay controls muted loop playsinline height="100%">
+            <source src="./img/inpaint1.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-inp2">
+          <video poster="" id="inp2" autoplay controls muted loop playsinline height="100%">
+            <source src="./img/inpaint2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-inp3">
+          <video poster="" id="inp3" autoplay controls muted loop playsinline height="100%">
+            <source src="./img/inpaint3.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/w8QZ4Kv-cJg?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+      <!-- Visual Effects.
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Visual Effects</h2>
+          <p>
+            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
+            would be impossible without nerfies since it would require going through a wall.
+          </p>
+          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dollyzoom-stacked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div> -->
+      <!--/ Visual Effects. -->
+
+      <!-- Matting.
+      <div class="column">
+        <h2 class="title is-3">Matting</h2>
+        <div class="columns is-centered">
+          <div class="column content">
+            <p>
+              As a byproduct of our method, we can also solve the matting problem by ignoring
+              samples that fall outside of a bounding box during rendering.
+            </p>
+            <video id="matting-video" controls playsinline height="100%">
+              <source src="./static/videos/matting.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div> -->
+    <!--/ Matting. -->
+
+    <!-- Animation. 
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Animation</h2>
+
+        <h3 class="title is-4">Interpolating states</h3>
+        <div class="content has-text-justified">
+          <p>
+          </p>
+        </div>
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_start.jpg"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+            <p>Start Frame</p>
+          </div>
+          <div class="column interpolation-video-column">
+            <div id="interpolation-image-wrapper">
+              Loading...
             </div>
-				<p>
-						Given an RGB-D reconstruction and the RGB frames,
-						we first predict 3D clutter segmentation. The prediction is then
-						projected in different camera views to mask RGB and depth images.
-						Next, we inpaint RGB image which we use to guide depth completion.
-						Afterwards, we run consistency pruning and voting for all RGB-D
-						frames. Any inpainting with remaining missing regions is sent back
-						to RGB and depth inpainting again. The loop continues until all
-						missing regions are filled. As last, we obtain the final inpainted
-						scene mesh through mesh reconstruction.
-						</p>
-				<p>
-						The key idea of 3D inpainting is to disentangling semantics and
-						geometry through 2D inpainting. This is different from prior work
-						that directly performs 3D inpainting on vocel grids.
-						</p>
+            <input class="slider is-fullwidth is-large is-info"
+                   id="interpolation-slider"
+                   step="1" min="0" max="100" value="0" type="range">
+          </div>
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_end.jpg"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+            <p class="is-bold">End Frame</p>
+          </div>
         </div>
-    </div>
+        <br/>-->
+        <!--/ Interpolating. -->
 
-    <div class="section" id="abstract">
-			<h2> Abstract</h2>
-        <hr>
-        <p>
-        Removing clutter from scenes is essential in many applications,
-				ranging from privacy-concerned content filtering to data augmentation.
-				In this work, we present an automatic system that removes clutter from
-				3D scenes and inpaints with coherent geometry and texture. We propose
-				techniques for its two key components: 3D segmentation from shared
-				properties and 3D inpainting, both of which are important porblems. The
-				definition of 3D scene clutter (frequently-moving objects) is not well
-				captured by commonly-studied object categories in computer vision. To
-				tackle the lack of well-defined clutter annotations, we group noisy
-				fine-grained labels, leverage virtual rendering, and impose an
-				instance-level area-sensitive loss. Once clutter is removed, we inpaint
-				geometry and texture in the resulting holes by merging inpainted RGB-D
-				images. This requires novel voting and pruning strategies that
-				guarantee multi-view consistency across individually inpainted images
-				for mesh reconstruction. Experiments on ScanNet and Matterport dataset
-				show that our method outperforms baselines for clutter segmentation and
-				3D inpainting, both visually and quantitatively.</p>
-    </div>
-
-    <div class="section" id="resultfull">
-        <h2>Full Pipeline result on ScanNet Dataset</h2>
-    		<hr>
-        <p>
-				 Results for automatic clutter removal and 3D inpainting. Each
-						row shows a rendered view of an input 3D scene, together with our
-						clutter segmentation and a rendered view of the scene with
-						inpainted color and geometry. We compare the latter to removing
-						clutter and filling the resulting holes with either Poisson Surface
-						Reconstruction (PSR) or a triangulation-based hole-filling
-						algorithm.
-        </p>
-         <div class="row align-items-center">
-            <div width="50%" class="col justify-content-center text-center">
-										<img src="img/result.png">
-             <!--   <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
-                    <source src="img/interpolation.mp4" type="video/mp4">
-                </video>-->
-            </div> 
-				 </div>
-
-
-<!--
-        <div class="row align-items-center">
-            <div class="col justify-content-center text-center">
-                <video width="75%" playsinline="" autoplay="" loop="" preload="" muted="">
-                    <source src="img/syn_gen.mp4" type="video/mp4">
-                </video>
-            </div> 
-				</div>-->
-    </div>
-
-    <div class="section" id="result3dinpint">
-        <h2>3D Inpainting Result on Matterport3D Dataset</h2>
-        <hr>
-        <p>
-						Compared to SPSG and FF, our method fills in more coherent geometry
-						and texture.
-        </p>
-         <div class="row align-items-center">
-            <div width="50%" class="col justify-content-center text-center">
-										<img src="img/inpaint.mp4">
-             <!--   <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
-                    <source src="img/extrapolation.mp4" type="video/mp4">
-                </video>-->
-            </div> 
-				 </div>
-    </div>
-   <!-- <div class="btn-group" role="group" aria-label="Top menu">
-        <a class="btn btn-primary" href="https://arxiv.org/abs/">Paper</a>
-        <a class="btn btn-primary" href="https://weify627.github.io/nasam">Code</a>
-        <a class="btn btn-primary" href="">Talk(Long)</a>
-        <a class="btn btn-primary" href="">Slides</a>
-				-->
-<!--todo
-    <div class="section">
-        <h2>Bibtex</h2>
-        <hr>
-        <hr>
-        <div class="bibtexsection">
-            @inproceedings{wei2022nasam,
-                title = {Self-supervised Neural Articulated Shape and Appearance Models},
-                author = {Fangyin Wei and Rohan Chabra and Lingni Ma and Christoph
-                          Lassner and Michael Zollhoefer and Szymon Rusinkiewicz and Chris
-                          Sweeney and Richard Newcombe and Mira Slavcheva},
-                booktitle = {Proceedings IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-                year={2022}
-            }
+        <!-- Re-rendering.
+        <h3 class="title is-4">Re-rendering the input video</h3>
+        <div class="content has-text-justified">
+          <p>
+          </p>
         </div>
-    </div>-->
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="75%">
+            <source src="./static/videos/replay.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div> -->
+        <!--/ Re-rendering. -->
 
-    <hr>
+    <!--/ Animation. -->
 
-    <footer>
-        <p>Send feedback and questions to <a href="http://weify627.github.io/">Fangyin Wei</a></p>
-				<p>Acknowledgement: website template from <a href="https://vsitzmann.github.io/siren/">SIREN</a></p>
-    </footer>
-</div>
 
-<script>
-// When the user scrolls the page, execute myFunction 
-window.onscroll = function() {myFunction()};
+    <!-- Concurrent Work. 
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
 
-// Get the navbar
-var navbar = document.getElementById("navbar");
+        <div class="content has-text-justified">
+          <p>
+          </p>
+        </div>
+      </div>
+    </div>
 
-// Get the offset position of the navbar
-var sticky = navbar.offsetTop;
+  </div>
+</section>
+     -->
 
-// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-function myFunction() {
-  if (window.pageYOffset >= sticky) {
-    navbar.classList.add("sticky")
-  } else {
-    navbar.classList.remove("sticky");
-  }
-}
-</script>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{wei2023clutter,
+  author    = {Wei, Fangyin and Funkhouser, Thomas and Rusinkiewicz, Szymon},
+  title     = {Clutter Detection and Removal in 3D Scenes with View-Consistent Inpainting},
+  journal   = {arXiv preprint arXiv:},
+  year      = {2023},
+}</code></pre> <!--todo-->
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="https://arxiv.org/pdf/">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://www.youtube.com/watch?v=w8QZ4Kv-cJg" class="external-link" disabled>
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+						<p>Website design based on the <a href="https://nerfies.github.io">Nerfies</a> project page. If you want
+					to reuse their <a href="https://github.com/nerfies/nerfies.github.io">source code</a>, please credit them appropriately.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
