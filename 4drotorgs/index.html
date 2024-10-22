@@ -145,47 +145,6 @@
   </div>
 </section>
 
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <img src="./static/images/teaser.png"
-      class="interpolation-image"
-      alt="Interpolate start reference image."/>
-			<div class="video-container">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/18zPuhQ3sSs?rel=0&amp;showinfo=0"
-                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/NneH2sZSrwc?rel=0&amp;showinfo=0"
-                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-			</div>
-      <h2 class="subtitle has-text-centered">
-        <span class="dnerf">4D-Rotor Gaussian Splatting</span> achieves high quality dynamic reconstruction with an onscreen rendering speed of 144 FPS at 4K resolution on a single RTX4090.
-      </h2>
-    </div>
-  </div>
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            We consider the problem of novel-view synthesis (NVS) for dynamic scenes. Recent neural approaches have accomplished exceptional NVS results for static 3D scenes, but extensions to 4D time-varying scenes remain non-trivial. Prior efforts often encode dynamics by learning a canonical space plus implicit or explicit deformation fields, which struggle in challenging scenarios like sudden movements or generating high-fidelity renderings. In this paper, we introduce 4D Gaussian Splatting (4DRotorGS), a novel method that represents dynamic scenes with anisotropic 4D XYZT Gaussians, inspired by the success of 3D Gaussian Splatting in static scenes [Kerbl et al. 2023]. We model dynamics at each timestamp by temporally slicing the 4D Gaussians, which naturally compose dynamic 3D Gaussians and can be seamlessly projected into images. As an explicit spatial-temporal representation, 4DRotorGS demonstrates powerful capabilities for modeling complicated dynamics and fine details—especially for scenes with abrupt motions. We further implement our temporal slicing and splatting techniques in a highly optimized CUDA acceleration framework, achieving real-time inference rendering speeds of up to 277 FPS on an RTX 3090 GPU and 583 FPS on an RTX 4090 GPU (off screen). Rigorous evaluations on scenes with diverse motions showcase the superior efficiency and effectiveness of 4DRotorGS, which consistently outperforms existing methods both quantitatively and qualitatively.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!--/ Abstract. -->
-
-  </div>
-</section>
 
 
 
@@ -238,36 +197,6 @@
   <div class="hero-body">
     <div class="container">
       <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-bouncingballs">
-          <video poster="" id="bouncingballs" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dnerf/bouncingballs.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-hellwarrior">
-          <video poster="" id="hellwarrior" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dnerf/hellwarrior.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-hook">
-          <video poster="" id="hook" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dnerf/hook.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-jumpingjacks">
-          <video poster="" id="jumpingjacks" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dnerf/jumpingjacks.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-lego">
-          <video poster="" id="lego" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dnerf/lego.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
         <div class="item item-mutant">
           <video poster="" id="mutant" autoplay controls muted loop playsinline height="100%">
             <source src="./static/videos/dnerf/mutant.mp4"
@@ -286,8 +215,56 @@
                     type="video/mp4">
           </video>
         </div>
+        <div class="item item-bouncingballs">
+          <video poster="" id="bouncingballs" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dnerf/bouncingballs.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-jumpingjacks">
+          <video poster="" id="jumpingjacks" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dnerf/jumpingjacks.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-hellwarrior">
+          <video poster="" id="hellwarrior" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dnerf/hellwarrior.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-hook">
+          <video poster="" id="hook" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dnerf/hook.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-lego">
+          <video poster="" id="lego" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dnerf/lego.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We consider the problem of novel-view synthesis (NVS) for dynamic scenes. Recent neural approaches have accomplished exceptional NVS results for static 3D scenes, but extensions to 4D time-varying scenes remain non-trivial. Prior efforts often encode dynamics by learning a canonical space plus implicit or explicit deformation fields, which struggle in challenging scenarios like sudden movements or generating high-fidelity renderings. In this paper, we introduce 4D Gaussian Splatting (4DRotorGS), a novel method that represents dynamic scenes with anisotropic 4D XYZT Gaussians, inspired by the success of 3D Gaussian Splatting in static scenes [Kerbl et al. 2023]. We model dynamics at each timestamp by temporally slicing the 4D Gaussians, which naturally compose dynamic 3D Gaussians and can be seamlessly projected into images. As an explicit spatial-temporal representation, 4DRotorGS demonstrates powerful capabilities for modeling complicated dynamics and fine details—especially for scenes with abrupt motions. We further implement our temporal slicing and splatting techniques in a highly optimized CUDA acceleration framework, achieving real-time inference rendering speeds of up to 277 FPS on an RTX 3090 GPU and 583 FPS on an RTX 4090 GPU (off screen). Rigorous evaluations on scenes with diverse motions showcase the superior efficiency and effectiveness of 4DRotorGS, which consistently outperforms existing methods both quantitatively and qualitatively.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
   </div>
 </section>
 
@@ -371,7 +348,26 @@
     </div> -->
     <!--/ Concurrent Work. -->
 
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+		<h2 class="title is-3">Real-Time Onscreen Rendering</h2>
+			<div class="video-container">
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/18zPuhQ3sSs?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/NneH2sZSrwc?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+			</div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">4D-Rotor Gaussian Splatting</span> achieves high quality dynamic reconstruction with an onscreen rendering speed of 144 FPS at 4K resolution on a single NVIDIA RTX4090.
+      </h2>
+    </div>
   </div>
+  </div>
+
 </section>
 
 
